@@ -24,8 +24,8 @@ export class Kandidati {
     @Column("int", { name: "ID_DIPLOME", nullable: true })
     idDiplome: number | null;
 
-    @Column("int", { name: "ID_KORISNIKA" })
-    idKorisnika: number;
+    // @Column("int", { name: "ID_KORISNIKA" })
+    // idKorisnika: number;
 
     @Column("text", { name: "IME_KANDIDATA" })
     imeKandidata: string;
@@ -71,5 +71,5 @@ export class Kandidati {
 
     @OneToOne(() => Korisnici)
     @JoinColumn([{ name: "ID_KORISNIKA", referencedColumnName: "idKorisnika" }])
-    idKorisnika2: Korisnici;
+    korisnik: Korisnici;
 }
