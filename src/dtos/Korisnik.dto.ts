@@ -1,6 +1,6 @@
-export class CreateKorisnikDTO {
+export class BasicKorisnikDTO {
     idTipa: number;
-    idKandidata: number;
+    idKandidata?: number;
     username: string;
     password: string;
 }

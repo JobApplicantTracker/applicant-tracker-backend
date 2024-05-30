@@ -18,11 +18,11 @@ export class Korisnici {
     @PrimaryGeneratedColumn({ type: "int", name: "ID_KORISNIKA" })
     idKorisnika: number;
 
-    @Column("int", { name: "ID_TIPA" })
-    idTipa: number | null;
+    // @Column("int", { name: "ID_TIPA" })
+    // idTipa: number | null;
 
-    @Column("int", { name: "ID_KANDIDATA", nullable: true })
-    idKandidata: number | null;
+    // @Column("int", { name: "ID_KANDIDATA", nullable: true })
+    // idKandidata: number | null;
 
     @Column("varchar", { name: "USERNAME", length: 45 })
     username: string;
@@ -30,14 +30,17 @@ export class Korisnici {
     @Column("varchar", { name: "PASSWORD", length: 45 })
     password: string;
 
-    @OneToOne(() => Kandidati)
+    @OneToOne(() => Kandidati, kandidat => kandidat.idKorisnika, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    })
     @JoinColumn([{ name: "ID_KANDIDATA", referencedColumnName: "idKandidata" }])
-    idKandidata2: Kandidati;
+    idKandidata: Kandidati;
 
-    @ManyToOne(() => TipKorisnika, (tipKorisnika) => tipKorisnika.korisnicis, {
+    @ManyToOne(() => TipKorisnika, (tipKorisnika) => tipKorisnika.korisnici, {
         onDelete: "RESTRICT",
         onUpdate: "RESTRICT",
     })
     @JoinColumn([{ name: "ID_TIPA", referencedColumnName: "idTipa" }])
-    idTipa2: TipKorisnika;
+    idTipa: TipKorisnika;
 }

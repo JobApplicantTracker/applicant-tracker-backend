@@ -10,6 +10,6 @@ export class TipPosla {
     @Column("text", { name: "NAZIV_POSLA" })
     nazivPosla: string;
 
-    @ManyToMany(() => Kandidati, (kandidati) => kandidati.tipPoslas)
-    kandidatis: Kandidati[];
+    @ManyToMany(() => Kandidati, (kandidati) => kandidati.tipPosla)
+    kandidati: Kandidati[];
 }

@@ -21,8 +21,8 @@ export class Kandidati {
     @PrimaryGeneratedColumn({ type: "int", name: "ID_KANDIDATA" })
     idKandidata: number;
 
-    @Column("int", { name: "ID_DIPLOME", nullable: true })
-    idDiplome: number | null;
+    // @Column("int", { name: "ID_DIPLOME", nullable: true })
+    // idDiplome: number | null;
 
     // @Column("int", { name: "ID_KORISNIKA" })
     // idKorisnika: number;
@@ -51,7 +51,7 @@ export class Kandidati {
     @Column("text", { name: "OBRAZOVNA_USTANOVA" })
     obrazovnaUstanova: string;
 
-    @ManyToMany(() => TipPosla, (tipPosla) => tipPosla.kandidatis)
+    @ManyToMany(() => TipPosla, (tipPosla) => tipPosla.kandidati)
     @JoinTable({
         name: "kandidat_posao",
         joinColumns: [
@@ -60,16 +60,16 @@ export class Kandidati {
         inverseJoinColumns: [{ name: "ID_POSLA", referencedColumnName: "idPosla" }],
         schema: "bazakandidata",
     })
-    tipPoslas: TipPosla[];
+    tipPosla: TipPosla[];
 
-    @ManyToOne(() => Diplome, (diplome) => diplome.kandidatis, {
+    @ManyToOne(() => Diplome, (diplome) => diplome.kandidati, {
         onDelete: "RESTRICT",
         onUpdate: "RESTRICT",
     })
     @JoinColumn([{ name: "ID_DIPLOME", referencedColumnName: "idDiplome" }])
-    idDiplome2: Diplome;
+    idDiplome: Diplome;
 
     @OneToOne(() => Korisnici)
     @JoinColumn([{ name: "ID_KORISNIKA", referencedColumnName: "idKorisnika" }])
-    korisnik: Korisnici;
+    idKorisnika: Korisnici;
 }

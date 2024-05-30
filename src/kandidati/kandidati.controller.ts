@@ -1,27 +1,28 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { KandidatiService } from './kandidati.service';
-import { CreateKandidatDTO, UpdateKandidatDTO } from './dtos/Kandidati.dto';
+import { KandidatDTO } from '../dtos/Kandidati.dto';
 
 @Controller('kandidati')
 export class KandidatiController {
     constructor(private kandidatService: KandidatiService) { }
     @Get()
-    getKandidat() {
-        return this.kandidatService.findKandidat();
+    async getKandidati() {
+        return await this.kandidatService.findAll();
     }
 
     @Post()
-    createKandidat(@Body() createKandidatDto: CreateKandidatDTO) {
+    async createKandidat(@Body() createKandidatDto: KandidatDTO) {
         const { ...kandidatDetails } = createKandidatDto;
-        this.kandidatService.createKandidat(createKandidatDto);
+        await this.kandidatService.createKandidat(createKandidatDto);
     }
 
     @Put(':id')
     async updateKandidatById(
         @Param("id", ParseIntPipe) id: number,
-        @Body() updateKandidatDto: UpdateKandidatDTO
+        @Body() updateKandidatDto: KandidatDTO
     ) {
-        await this.kandidatService.updateKandidat(updateKandidatDto, id);
+        const { ...kandidatDetails } = updateKandidatDto;
+        await this.kandidatService.updateKandidat(id, kandidatDetails);
     }
     @Delete(':id')
     async deleteKandidatById(

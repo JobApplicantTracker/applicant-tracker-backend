@@ -1,26 +1,32 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CreateKorisnikDTO } from './dtos/CreateKorisnik.dto';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { BasicKorisnikDTO } from '../dtos/Korisnik.dto';
 import { KorisniciService } from './korisnici.service';
 @Controller('user')
 export class KorisniciController {
     constructor(private korisniciService: KorisniciService) { }
 
     @Get()
-    getKorisnici() {
-        return this.korisniciService.findKorisnici()
+    async getKorisnici() {
+        return await this.korisniciService.findAll()
     }
 
     @Post()
-    createKorisnik(
-        @Body() createKorisnikDto: CreateKorisnikDTO
+    async createKorisnik(
+        @Body() createKorisnikDto: BasicKorisnikDTO
     ) {
         const { ...korisnikDetails } = createKorisnikDto;
-        this.korisniciService.createKorisnici(createKorisnikDto);
+        await this.korisniciService.createKorisnici(createKorisnikDto);
     }
     @Get(":id")
     async getKorisnik(
         @Param('id') id: number
     ) {
         return await this.korisniciService.findById(id);
+    }
+    @Delete(':id')
+    async deleteKandidatById(
+        @Param("id", ParseIntPipe) id: number
+    ) {
+        await this.korisniciService.deleteKorisnik(id);
     }
 }

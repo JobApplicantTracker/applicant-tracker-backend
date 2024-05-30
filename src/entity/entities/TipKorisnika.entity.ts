@@ -9,6 +9,6 @@ export class TipKorisnika {
     @Column("text", { name: "NAZIV_TIPA" })
     nazivTipa: string;
 
-    @OneToMany(() => Korisnici, (korisnici) => korisnici.idTipa2)
-    korisnicis: Korisnici[];
+    @OneToMany(() => Korisnici, (korisnici) => korisnici.idTipa)
+    korisnici: Korisnici[];
 }

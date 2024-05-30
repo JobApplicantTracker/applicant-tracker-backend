@@ -9,6 +9,6 @@ export class Diplome {
     @Column("text", { name: "NAZIV_DIPLOME" })
     nazivDiplome: string;
 
-    @OneToMany(() => Kandidati, (kandidati) => kandidati.idDiplome2)
-    kandidatis: Kandidati[];
+    @OneToMany(() => Kandidati, (kandidati) => kandidati.idDiplome)
+    kandidati: Kandidati[];
 }
