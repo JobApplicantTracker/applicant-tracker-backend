@@ -22,10 +22,19 @@ export class KorisniciService {
         });
     }
     async findOne(idKorisnika: number): Promise<Korisnici | null> {
-        return await this.korisniciRepository.findOne({
+        const korisnik = await this.korisniciRepository.findOne({
             where: { idKorisnika },
             relations: ["idKandidata", "idTipa"]
         });
+        if (!korisnik) {
+            return null; // Return null if no Korisnici entity is found
+        }
+
+        // If idKandidata is null, set it to null explicitly
+        if (!korisnik.idKandidata) {
+            korisnik.idKandidata = null;
+        }
+        return korisnik;
     }
 
     async findByUsername(username: string): Promise<Korisnici | null> {

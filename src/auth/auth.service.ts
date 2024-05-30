@@ -14,14 +14,14 @@ export class AuthService {
         const payload = {
             username: user.username,
             sub: {
-                idKandidata: user.idKandidata.idKandidata,
+                idKandidata: user.idKandidata ? user.idKandidata.idKandidata : null,
                 idKorisnika: user.idKorisnika,
                 idTipa: user.idTipa.idTipa,
                 username: user.username
             },
         };
 
-        console.log()
+        console.log(payload)
         return {
             user,
             backendTokens: {
@@ -39,12 +39,10 @@ export class AuthService {
     }
 
     async validateUser(dto: LoginDto) {
-        const user = this.korisniciServis.findByUsername(dto.username)
-
-        if (user && (compare(dto.password, (await user).password)))
+        const user = await this.korisniciServis.findByUsername(dto.username)
+        if (user && (dto.password === user.password))
             return user;
         throw new UnauthorizedException();
-
     }
 
     async refreshToken(user: any) {
@@ -65,9 +63,4 @@ export class AuthService {
             expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
         };
     }
-}
-
-
-function compare(password: string, password1: any) {
-    return password == password1 ? true : false
 }
