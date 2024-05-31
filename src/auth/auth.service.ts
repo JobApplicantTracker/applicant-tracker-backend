@@ -20,8 +20,6 @@ export class AuthService {
                 username: user.username
             },
         };
-
-        console.log(payload)
         return {
             user,
             backendTokens: {

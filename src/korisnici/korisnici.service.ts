@@ -87,8 +87,14 @@ export class KorisniciService {
 
     async deleteKorisnik(idKorisnika: number): Promise<void> {
         const user = await this.findOne(idKorisnika);
-        if (user.idKandidata)
-            await this.kandidatiRepository.delete(user.idKandidata.idKandidata)
-        await this.korisniciRepository.delete(idKorisnika);
+        if (user) {
+            if (user.idKandidata)
+                await this.kandidatiRepository.delete(user.idKandidata.idKandidata)
+            await this.korisniciRepository.delete(idKorisnika);
+        }
+    }
+
+    async getTipoviKorisnika() {
+        return await this.tipoviRepository.find();
     }
 }

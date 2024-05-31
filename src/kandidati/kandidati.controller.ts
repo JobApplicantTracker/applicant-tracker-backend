@@ -10,11 +10,22 @@ export class KandidatiController {
         return await this.kandidatService.findAll();
     }
 
+    @Get("/poslovi")
+    async getTipovi() {
+        return await this.kandidatService.getTioviPosla();
+    }
+
+    @Get("/diplome")
+    async getDiploms() {
+        return await this.kandidatService.getDiplome();
+    }
+
     @Post()
     async createKandidat(@Body() createKandidatDto: KandidatDTO) {
         const { ...kandidatDetails } = createKandidatDto;
         await this.kandidatService.createKandidat(createKandidatDto);
     }
+
 
     @Put(':id')
     async updateKandidatById(

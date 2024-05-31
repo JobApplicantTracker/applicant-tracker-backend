@@ -10,12 +10,15 @@ export class KorisniciController {
         return await this.korisniciService.findAll()
     }
 
+    @Get("/types")
+    async getTipoviKorisnika() {
+        return await this.korisniciService.getTipoviKorisnika()
+    }
+
     @Post()
-    async createKorisnik(
-        @Body() createKorisnikDto: BasicKorisnikDTO
-    ) {
-        const { ...korisnikDetails } = createKorisnikDto;
-        await this.korisniciService.createKorisnici(createKorisnikDto);
+    async createKorisnik(@Body() dto: BasicKorisnikDTO) {
+        const { ...korisnikDetails } = dto;
+        return await this.korisniciService.createKorisnici(korisnikDetails);
     }
     @Get(":id")
     async getKorisnik(

@@ -104,4 +104,12 @@ export class KandidatiService {
     async deleteKandidat(idKandidata: number): Promise<void> {
         await this.kandidatiRepository.delete(idKandidata);
     }
+
+    async getDiplome() {
+        return await this.diplomeRepository.find();
+    }
+
+    async getTioviPosla() {
+        return await this.tipPoslaRepository.find();
+    }
 }
