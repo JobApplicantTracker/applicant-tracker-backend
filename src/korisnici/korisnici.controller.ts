@@ -15,17 +15,19 @@ export class KorisniciController {
         return await this.korisniciService.getTipoviKorisnika()
     }
 
-    @Post()
-    async createKorisnik(@Body() dto: BasicKorisnikDTO) {
-        const { ...korisnikDetails } = dto;
-        return await this.korisniciService.createKorisnici(korisnikDetails);
-    }
     @Get(":id")
     async getKorisnik(
         @Param('id') id: number
     ) {
         return await this.korisniciService.findById(id);
     }
+
+    @Post()
+    async createKorisnik(@Body() dto: BasicKorisnikDTO) {
+        const { ...korisnikDetails } = dto;
+        return await this.korisniciService.createKorisnici(korisnikDetails);
+    }
+
     @Delete(':id')
     async deleteKandidatById(
         @Param("id", ParseIntPipe) id: number

@@ -49,7 +49,8 @@ export class KorisniciService {
         return await this.korisniciRepository.findOne({
             where: {
                 idKorisnika: id
-            }
+            },
+            relations: ["idKandidata", "idTipa"]
         })
     }
 

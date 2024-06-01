@@ -53,15 +53,18 @@ export class KandidatiService {
                 where: { idPosla: In(tipPosla) }
             });
         }
+        console.log(poslovi)
 
-        const newKandidat = this.kandidatiRepository.create({
+        const newKandidatPattern = this.kandidatiRepository.create({
             ...kandidatData,
             idDiplome: diploma,
             idKorisnika: korisnik,
             tipPosla: poslovi
         });
-
-        return await this.kandidatiRepository.save(newKandidat);
+        const newKandidat = await this.kandidatiRepository.save(newKandidatPattern);
+        korisnik.idKandidata = newKandidat;
+        await this.korisniciRepository.save(korisnik)
+        return newKandidat
     }
 
 
@@ -92,14 +95,16 @@ export class KandidatiService {
             });
         }
 
-        const updatedKandidat = this.kandidatiRepository.merge(kandidat, {
+        const updatedKandidatPattern = this.kandidatiRepository.merge(kandidat, {
             ...kandidatData,
             idDiplome: diploma,
             idKorisnika: korisnik,
             tipPosla: poslovi
         });
-        console.log(updatedKandidat)
-        return await this.kandidatiRepository.save(updatedKandidat);
+        const updatedKandidat = await this.kandidatiRepository.save(updatedKandidatPattern);
+        korisnik.idKandidata = updatedKandidat;
+        await this.korisniciRepository.save(korisnik)
+        return updatedKandidat
     }
     async deleteKandidat(idKandidata: number): Promise<void> {
         await this.kandidatiRepository.delete(idKandidata);
