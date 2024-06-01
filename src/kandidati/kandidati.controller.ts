@@ -33,15 +33,15 @@ export class KandidatiController {
         return await this.kandidatService.createKandidat(createKandidatDto);
     }
 
-
     @Put(':id')
     async updateKandidatById(
         @Param("id", ParseIntPipe) id: number,
         @Body() updateKandidatDto: KandidatDTO
     ) {
         const { ...kandidatDetails } = updateKandidatDto;
-        await this.kandidatService.updateKandidat(id, kandidatDetails);
+        return await this.kandidatService.updateKandidat(id, kandidatDetails);
     }
+
     @Delete(':id')
     async deleteKandidatById(
         @Param("id", ParseIntPipe) id: number

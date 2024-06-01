@@ -103,8 +103,8 @@ export class KandidatiService {
         });
         const updatedKandidat = await this.kandidatiRepository.save(updatedKandidatPattern);
         korisnik.idKandidata = updatedKandidat;
-        await this.korisniciRepository.save(korisnik)
-        return updatedKandidat
+        await this.korisniciRepository.save(korisnik);
+        return updatedKandidat;
     }
     async deleteKandidat(idKandidata: number): Promise<void> {
         await this.kandidatiRepository.delete(idKandidata);
