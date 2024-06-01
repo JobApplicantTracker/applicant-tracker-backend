@@ -107,6 +107,13 @@ export class KandidatiService {
         return updatedKandidat;
     }
     async deleteKandidat(idKandidata: number): Promise<void> {
+        const kandidat = await this.findOne(idKandidata)
+        const korisnik = await this.korisniciRepository.findOne({ where: { idKorisnika: kandidat.idKorisnika.idKorisnika } });
+        if (!korisnik) {
+            throw new Error(`Korisnik with id ${kandidat.idKorisnika.idKorisnika} not found`);
+        }
+        korisnik.idKandidata = null;
+        await this.korisniciRepository.save(korisnik);
         await this.kandidatiRepository.delete(idKandidata);
     }
 
