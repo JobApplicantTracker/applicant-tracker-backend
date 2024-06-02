@@ -88,9 +88,16 @@ export class KorisniciService {
 
     async deleteKorisnik(idKorisnika: number): Promise<void> {
         const user = await this.findOne(idKorisnika);
+        let kandidat;
         if (user) {
-            if (user.idKandidata)
-                await this.kandidatiRepository.delete(user.idKandidata.idKandidata)
+            if (user.idKandidata) {
+                kandidat = await this.kandidatiRepository.findOne({ where: { idKandidata: user.idKandidata.idKandidata } });
+                kandidat.idKorisnika = null;
+                user.idKandidata = null;
+                await this.korisniciRepository.save(user);
+                await this.kandidatiRepository.save(kandidat);
+                await this.kandidatiRepository.delete(kandidat.idKandidata);
+            }
             await this.korisniciRepository.delete(idKorisnika);
         }
     }
