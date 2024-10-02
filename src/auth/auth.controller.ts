@@ -1,22 +1,22 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { LoginDto } from 'src/auth/dtos/auth.dto';
 import { AuthService } from 'src/auth/auth.service';
-import { KorisniciService } from 'src/korisnici/korisnici.service';
 import { RefreshJwtGuard } from './guard/refresh.guard';
-import { BasicKorisnikDTO } from 'src/dtos/Korisnik.dto';
+import { BasicKorisnikDTO } from 'src/types/Korisnik.dto';
+import { UsersService } from 'src/services/users.service';
+import { UsersDTO } from 'src/types/User.type';
 
 
 @Controller('auth')
 export class AuthController {
     constructor(
-        private korisniciService: KorisniciService,
+        private usersService: UsersService,
         private authService: AuthService
     ) { }
 
     @Post('register')
-    async registerUser(@Body() dto: BasicKorisnikDTO) {
-        const { ...korisnikDetails } = dto;
-        return await this.korisniciService.createKorisnici(korisnikDetails);
+    async registerUser(@Body() dto: UsersDTO) {
+        return await this.usersService.createUser(dto);
     }
 
     @Post('login')
