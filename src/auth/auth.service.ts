@@ -1,23 +1,23 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { KorisniciService } from 'src/korisnici/korisnici.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/auth/dtos/auth.dto';
+import { UsersService } from 'src/services/users.service';
 const EXPIRE_TIME = 20 * 10000;
 @Injectable()
 export class AuthService {
-    constructor(private korisniciServis: KorisniciService,
+    constructor(
+        private usersService: UsersService,
         private jwtService: JwtService
     ) { }
 
     async login(dto: LoginDto) {
         const user = await this.validateUser(dto);
         const payload = {
-            username: user.username,
+            email: user.email,
             sub: {
-                idKandidata: user.idKandidata ? user.idKandidata.idKandidata : null,
-                idKorisnika: user.idKorisnika,
-                idTipa: user.idTipa.idTipa,
-                username: user.username
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role.name
             },
         };
         return {
@@ -37,7 +37,7 @@ export class AuthService {
     }
 
     async validateUser(dto: LoginDto) {
-        const user = await this.korisniciServis.findByUsername(dto.username)
+        const user = await this.usersService.findByEmail(dto.email)
         if (user && (dto.password === user.password))
             return user;
         throw new UnauthorizedException();
