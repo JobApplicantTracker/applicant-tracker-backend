@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("roles", { schema: "orozdatabase" })
+@Entity("roles", { schema: "applicant-tracker-database" })
 export class Roles {
 
     @PrimaryGeneratedColumn({ type: "int", name: "ID_ROLE" })

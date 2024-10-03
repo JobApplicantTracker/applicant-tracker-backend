@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Users } from "./Users.entity";
 
-@Entity("jobs", { schema: "orozdatabase" })
+@Entity("jobs", { schema: "applicant-tracker-database" })
 export class Jobs {
 
     @PrimaryGeneratedColumn({ type: "int", name: "ID_JOB" })

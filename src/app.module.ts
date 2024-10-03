@@ -15,7 +15,7 @@ import { RolesModule } from './modules/roles.module';
     port: 3308,
     username: 'root',
     password: 'majeskuel123',
-    database: 'orozdatabase',
+    database: 'applicant-tracker-database',
     synchronize: true,
     logging: true,
     entities: [__dirname + '/**/*.entity{.ts,.js}']
