@@ -1,6 +1,4 @@
-[
-  {
-    "name": "default",
+{
     "type": "mysql",
     "host": "localhost",
     "port": 3308,
@@ -8,6 +6,6 @@
     "password": "majeskuel123",
     "database": "applicant-tracker-database",
     "synchronize": false,
-    "entities": ["entities/*.ts"]
+    "entities": ["entities/*.ts"],
+    "logging": ["error", "warn"] 
   }
-]

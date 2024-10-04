@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Users } from "./Users.entity";
 
 @Entity("roles", { schema: "applicant-tracker-database" })
 export class Roles {
@@ -8,4 +9,7 @@ export class Roles {
 
     @Column("varchar", { name: "NAME", length: 45 })
     name: string;
+
+    @OneToMany(() => Users, (user) => user.role)
+    users: Users[];
 }

@@ -15,11 +15,11 @@ export class JobsService {
     ) { }
 
     async findAll(): Promise<Jobs[]> {
-        return await this.jobsRepository
-            .createQueryBuilder("job")
-            .leftJoinAndSelect("job.candidates", "user", "user.deleted = false")
-            .where("job.deleted = false")
-            .getMany();
+        return await this.jobsRepository.find({
+            where: {
+                deleted: false
+            }
+        })
     }
     async findOneJob(id: number): Promise<Jobs | null> {
         return await this.jobsRepository
@@ -29,10 +29,10 @@ export class JobsService {
             .andWhere("job.deleted = false")
             .getOne();
     }
-    async createJob(data: JobDTO): Promise<boolean> {
+    async createJob(data: JobDTO, creatorEmail: string): Promise<boolean> {
         try {
             // Find the creator user based on creatorId
-            const creator = await this.usersRepository.findOne({ where: { idUser: data.creatorId } });
+            const creator = await this.usersRepository.findOne({ where: { email: creatorEmail } });
 
             if (!creator) {
                 throw new Error("Creator user not found");

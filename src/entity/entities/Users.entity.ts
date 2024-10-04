@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Roles } from "./Roles.entity";
 import { Jobs } from "./Jobs.entity";
 
@@ -34,26 +34,12 @@ export class Users {
     @Column("bool", { name: "DELETED", default: false })
     deleted: boolean
 
-    @ManyToOne(() => Roles, (role) => role.idRole)
+    @ManyToOne(() => Roles, (role) => role.users)
     role: Roles
 
-    @ManyToMany(() => Jobs, (jobs) => jobs.idJob)
+    @OneToMany(() => Jobs, (job) => job.creator)
+    createdJobs: Jobs[];
+
+    @ManyToMany(() => Jobs, (job) => job.candidates)
     jobs: Jobs[];
 }
-
-// @Column("int", { name: "ID_TIPA" })
-// idTipa: number | null;
-
-// @Column("int", { name: "ID_KANDIDATA", nullable: true })
-// idKandidata: number | null;
-
-
-// @JoinColumn([{ name: "ID_KANDIDATA", referencedColumnName: "idKandidata" }])
-// idKandidata: Kandidati;
-
-// @ManyToOne(() => TipKorisnika, (tipKorisnika) => tipKorisnika.korisnici, {
-//     onDelete: "RESTRICT",
-//     onUpdate: "RESTRICT",
-// })
-// @JoinColumn([{ name: "ID_TIPA", referencedColumnName: "idTipa" }])
-// idTipa: TipKorisnika;

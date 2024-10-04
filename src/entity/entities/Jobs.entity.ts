@@ -19,11 +19,21 @@ export class Jobs {
     @Column("bool", { name: "DELETED" })
     deleted: boolean
 
-    @ManyToOne(() => Users, (creator) => creator.idUser)
+    @ManyToOne(() => Users, (user) => user.createdJobs)
     creator: Users;
 
     @ManyToMany(() => Users, (candidates) => candidates.idUser)
-    @JoinTable()
+    @JoinTable({
+        name: "job_candidates", // Join table name
+        joinColumn: {
+            name: "jobId",
+            referencedColumnName: "idJob"
+        },
+        inverseJoinColumn: {
+            name: "userId",
+            referencedColumnName: "idUser"
+        }
+    })
     candidates: Users[];
 }
 

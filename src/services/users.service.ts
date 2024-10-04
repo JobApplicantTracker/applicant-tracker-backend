@@ -30,9 +30,6 @@ export class UsersService implements OnModuleInit {
             if (!existingRole) {
                 const newRole = this.rolesRepository.create({ name: roleName });
                 await this.rolesRepository.save(newRole);
-                console.log(`Role created: ${roleName}`);
-            } else {
-                console.log(`Role already exists: ${roleName}`);
             }
         }
     }
@@ -63,25 +60,24 @@ export class UsersService implements OnModuleInit {
             });
 
             await this.usersRepository.save(newUser);
-            console.log('Admin user created with email admin@oroz.com');
-        } else {
-            console.log('Admin user already exists.');
         }
     }
     async findAll(): Promise<Users[]> {
         return await this.usersRepository
-            .createQueryBuilder("user")
-            .leftJoinAndSelect("user.jobs", "job", "job.deleted = false")  // Filter jobs where deleted is false
-            .where("user.deleted = true")  // Find users where deleted is true
+            .createQueryBuilder("users")
+            .leftJoinAndSelect("users.role", "role")
+            .where("users.deleted = false")  // Find users where deleted is true
             .getMany();
     }
 
-    async findById(id: number): Promise<Users | null> {
-        return await this.usersRepository
-            .createQueryBuilder("user")
-            .leftJoinAndSelect("user.jobs", "job", "job.deleted = false") // Filter jobs where deleted is false
-            .where("user.idUser = :id", { id })
-            .getOne();
+    async findById(idUser: number): Promise<Users | null> {
+        return await this.usersRepository.findOne({
+            where: {
+                idUser: idUser,
+                deleted: false
+            },
+            relations: ["role"],
+        })
     }
 
     async findByEmail(email: string): Promise<Users | null> {
@@ -89,7 +85,8 @@ export class UsersService implements OnModuleInit {
             where: {
                 email: email,
                 deleted: false
-            }
+            },
+            relations: ["role"],
         })
     }
 
@@ -100,9 +97,11 @@ export class UsersService implements OnModuleInit {
             if (!role) {
                 throw new Error("Role not found");
             }
-
+            const salt = await bcrypt.genSalt();
+            const hashedPassword = await bcrypt.hash(data.password, salt);
             const newUser = this.usersRepository.create({
                 ...data,
+                password: hashedPassword,
                 role: role,
                 jobs: [],
                 deleted: false

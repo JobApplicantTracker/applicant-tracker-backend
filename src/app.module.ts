@@ -17,7 +17,7 @@ import { RolesModule } from './modules/roles.module';
     password: 'majeskuel123',
     database: 'applicant-tracker-database',
     synchronize: true,
-    logging: true,
+    // logging: true,
     entities: [__dirname + '/**/*.entity{.ts,.js}']
   }), UsersModule, JobsModule, RolesModule, AuthModule, ConfigModule.forRoot()],
   controllers: [AppController],

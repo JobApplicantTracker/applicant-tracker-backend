@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UsersController } from 'src/controlers/users.controller';
 import { Jobs } from 'src/entity/entities/Jobs.entity';
@@ -10,6 +11,6 @@ import { UsersService } from 'src/services/users.service';
     imports: [
         TypeOrmModule.forFeature([Jobs, Roles, Users])],
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, JwtService],
 })
 export class UsersModule { }

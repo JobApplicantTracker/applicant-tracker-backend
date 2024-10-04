@@ -2,7 +2,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/auth/dtos/auth.dto';
 import { UsersService } from 'src/services/users.service';
-const EXPIRE_TIME = 20 * 10000;
+import * as bcrypt from 'bcrypt';
+import { Users } from 'src/entity/entities/Users.entity';
+import { LoginResponseDTO } from 'src/types/LoginResponse.dto';
+
+const EXPIRE_TIME = 60 * 60 * 1000;
 @Injectable()
 export class AuthService {
     constructor(
@@ -10,7 +14,7 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    async login(dto: LoginDto) {
+    async login(dto: LoginDto): Promise<LoginResponseDTO> {
         const user = await this.validateUser(dto);
         const payload = {
             email: user.email,
@@ -36,9 +40,9 @@ export class AuthService {
         };
     }
 
-    async validateUser(dto: LoginDto) {
+    async validateUser(dto: LoginDto): Promise<Users> {
         const user = await this.usersService.findByEmail(dto.email)
-        if (user && (dto.password === user.password))
+        if (user && await bcrypt.compare(dto.password, user.password))
             return user;
         throw new UnauthorizedException();
     }
