@@ -17,6 +17,7 @@ export class AuthService {
     async login(dto: LoginDto): Promise<LoginResponseDTO> {
         const user = await this.validateUser(dto);
         const payload = {
+            idUser: user.idUser,
             email: user.email,
             sub: {
                 firstName: user.firstName,

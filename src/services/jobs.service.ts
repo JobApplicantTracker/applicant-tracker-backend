@@ -102,4 +102,12 @@ export class JobsService {
 
         return 'Successfully applied for job.';
     }
+
+    async getJobsAppliedByUser(userId: number): Promise<Jobs[]> {
+        return await this.jobsRepository
+            .createQueryBuilder("job")
+            .innerJoinAndSelect("job.candidates", "user") // Accessing candidates relationship
+            .where("user.idUser = :id", { id: userId })
+            .getMany();
+    }
 }

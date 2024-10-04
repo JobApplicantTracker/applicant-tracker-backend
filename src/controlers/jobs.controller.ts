@@ -40,4 +40,11 @@ export class JobsController {
         @Request() req) {
         return await this.jobsService.applyForJob({ jobId: id, userEmail: req.user.email });
     }
+
+    @UseGuards(JwtGuard)  // Ensure user is authenticated
+    @Get('/user/:id')
+    async getJobsAppliedByUser(@Request() req, @Param('id') id: number,) {
+        const userId = req.user.idUser;
+        return await this.jobsService.getJobsAppliedByUser(id);
+    }
 }
