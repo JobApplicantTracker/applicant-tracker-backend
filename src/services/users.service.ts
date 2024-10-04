@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Roles } from "src/entity/entities/Roles.entity";
 import { Users } from "src/entity/entities/Users.entity";
-import { UsersDTO } from "src/types/User.type";
+import { UpdateUserDTO, UsersDTO } from "src/types/User.type";
 import { Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
 
@@ -124,6 +124,22 @@ export class UsersService implements OnModuleInit {
         } catch (error) {
             console.error(error)
             return false;
+        }
+    }
+
+    async updateUser(id: number, data: UpdateUserDTO, roleAllowed: boolean): Promise<boolean> {
+        try {
+            let user = await this.findById(id);
+            const currRole = user.role
+            user = { ...user, ...data }
+            if (!roleAllowed) {
+                user.role = currRole
+            }
+            await this.usersRepository.save(user)
+            return true
+        } catch (error) {
+            console.error(error)
+            return false
         }
     }
 }
