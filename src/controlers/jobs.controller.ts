@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from "@nestjs/common";
 import { EmployeeGuard } from "src/auth/guard/employee.guard";
+import { JwtGuard } from "src/auth/guard/jwt.guard";
 import { JobsService } from "src/services/jobs.service";
 import { JobDTO } from "src/types/Job.type";
 
@@ -14,15 +15,29 @@ export class JobsController {
         return this.jobsService.findAll()
     }
 
-    @Post("create")
+    @Post("/create")
     @UseGuards(EmployeeGuard)
     async createJob(@Request() req, @Body() data: JobDTO) {
         return this.jobsService.createJob(data, req.user.email)
     }
 
-    @Patch("delete/:id")
+    @Patch("/delete/:id")
     @UseGuards(EmployeeGuard)
     async deleteJob(@Param('id') id: number) {
         return this.jobsService.deleteJob(id)
+    }
+
+    @Get("/job/:id")
+    async getSingleJob(
+        @Param('id') id: number
+    ) {
+        return this.jobsService.findOneJob(id)
+    }
+
+    @Post('/apply/:id')
+    @UseGuards(JwtGuard)  // Ensure the user is logged in
+    async applyForJob(@Param('id') id: number,
+        @Request() req) {
+        return await this.jobsService.applyForJob({ jobId: id, userEmail: req.user.email });
     }
 }

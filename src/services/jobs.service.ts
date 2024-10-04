@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Jobs } from "src/entity/entities/Jobs.entity";
 import { Users } from "src/entity/entities/Users.entity";
+import { ApplyJobDto } from "src/types/ApplyJob.dto";
 import { JobDTO } from "src/types/Job.type";
 import { Repository } from "typeorm";
 
@@ -61,5 +62,44 @@ export class JobsService {
             console.error(error)
             return false;
         }
+    }
+
+    async applyForJob(applyJobDto: ApplyJobDto): Promise<string> {
+        const { userEmail, jobId } = applyJobDto;
+
+        // Check if the user is an admin
+        const user = await this.usersRepository.findOne({
+            where: { email: userEmail },
+            relations: ['role'],
+        });
+
+        if (!user) {
+            return 'User not found.';
+        }
+
+        if (user.role.name === 'admin') {
+            return 'Admins cannot apply for jobs.'
+        }
+
+        // Find the job
+        const job = await this.jobsRepository.findOne({ where: { idJob: jobId }, relations: ["candidates"] });
+
+        if (!job) {
+            return 'Job not found.'
+        }
+        const candidates = job.candidates || [];
+        // Check if the user has already applied for the job
+        const alreadyApplied = candidates.some(candidate => candidate.idUser === user.idUser);
+
+        if (alreadyApplied) {
+            return 'Already applied for job.';
+        }
+
+        // Add the user to the job candidates
+        candidates.push(user);
+        job.candidates = candidates;
+        await this.jobsRepository.save(job);
+
+        return 'Successfully applied for job.';
     }
 }
