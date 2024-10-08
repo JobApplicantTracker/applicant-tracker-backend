@@ -18,6 +18,7 @@ export class JobsController {
     @Post("/create")
     @UseGuards(EmployeeGuard)
     async createJob(@Request() req, @Body() data: JobDTO) {
+        console.log(data)
         return this.jobsService.createJob(data, req.user.email)
     }
 
@@ -27,11 +28,24 @@ export class JobsController {
         return this.jobsService.deleteJob(id)
     }
 
+    @Patch("/delete/user/:userId")
+    @UseGuards(EmployeeGuard)
+    async deleteUserFromJob(@Param('userId') userId: number, @Body() data: any) {
+        return this.jobsService.deleteCandidat(data.jobId, userId)
+    }
+
     @Get("/job/:id")
     async getSingleJob(
         @Param('id') id: number
     ) {
         return this.jobsService.findOneJob(id)
+    }
+
+    @Get("/created/:id")
+    async getCreatedJobs(
+        @Param('id') id: number
+    ) {
+        return this.jobsService.getCreatedJobs(id)
     }
 
     @Post('/apply/:id')

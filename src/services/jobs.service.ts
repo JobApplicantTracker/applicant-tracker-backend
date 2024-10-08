@@ -63,7 +63,22 @@ export class JobsService {
             return false;
         }
     }
-
+    async deleteCandidat(jobId: number, userId: number): Promise<string> {
+        try {
+            const job = await this.jobsRepository.findOne({
+                where: { idJob: jobId },
+                relations: ['candidates']
+            })
+            if (!job) {
+                return `Job with id ${jobId} not found`;
+            }
+            job.candidates = job.candidates.filter(candidate => candidate.idUser != userId);
+            const data = await this.jobsRepository.save(job);
+            return 'Successfully removed candidat.'
+        } catch (error) {
+            return `Error removing candidate: ${error.message}`;
+        }
+    }
     async applyForJob(applyJobDto: ApplyJobDto): Promise<string> {
         const { userEmail, jobId } = applyJobDto;
 
@@ -109,5 +124,11 @@ export class JobsService {
             .innerJoinAndSelect("job.candidates", "user") // Accessing candidates relationship
             .where("user.idUser = :id", { id: userId })
             .getMany();
+    }
+    async getCreatedJobs(userId: number): Promise<Jobs[]> {
+        return await this.jobsRepository
+            .createQueryBuilder("job")
+            .where("job.creator= :id", { id: userId })
+            .getMany()
     }
 }

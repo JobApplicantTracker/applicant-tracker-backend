@@ -13,9 +13,9 @@ import { UniversitiesModule } from './modules/universities.module';
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',
     host: 'localhost',
-    port: 3308,
+    port: 3306,
     username: 'root',
-    password: 'majeskuel123',
+    password: '',
     database: 'applicant-tracker-database',
     synchronize: true,
     // logging: true,
