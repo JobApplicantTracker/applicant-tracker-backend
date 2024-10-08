@@ -1,4 +1,5 @@
 import { Roles } from "src/entity/entities/Roles.entity";
+import { Universities } from "src/entity/entities/Universities.entity";
 
 export type UsersDTO = {
     firstName: string;
@@ -11,6 +12,8 @@ export type UsersDTO = {
 
     city: string;
 
+    gender: string;
+
     school: string;
 
     email: string;
@@ -18,6 +21,8 @@ export type UsersDTO = {
     password: string;
 
     idRole: number
+
+    idUniversity: number
 }
 
 export type UpdateUserDTO = {
@@ -31,7 +36,9 @@ export type UpdateUserDTO = {
 
     city: string;
 
-    school: string
+    gender: string;
+
+    school: Universities
 
     role: Roles
 }

@@ -10,6 +10,9 @@ export class Jobs {
     @Column("varchar", { name: "NAME", length: 45 })
     name: string;
 
+    @Column("varchar", { name: "CITY", length: 45 })
+    City: string;
+
     @Column("int", { name: "NUM_OF_SEATS" })
     numOfSeats: number;
 

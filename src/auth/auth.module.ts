@@ -6,9 +6,10 @@ import { AuthController } from './auth.controller';
 import { UsersService } from 'src/services/users.service';
 import { Users } from 'src/entity/entities/Users.entity';
 import { Roles } from 'src/entity/entities/Roles.entity';
+import { Universities } from 'src/entity/entities/Universities.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Users, Roles])],
+    imports: [TypeOrmModule.forFeature([Users, Roles, Universities])],
     providers: [AuthService, UsersService, JwtService],
     controllers: [AuthController]
 })

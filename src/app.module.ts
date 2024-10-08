@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users.module';
 import { JobsModule } from './modules/jobs.module';
 import { RolesModule } from './modules/roles.module';
+import { UniversitiesModule } from './modules/universities.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -19,7 +20,7 @@ import { RolesModule } from './modules/roles.module';
     synchronize: true,
     // logging: true,
     entities: [__dirname + '/**/*.entity{.ts,.js}']
-  }), UsersModule, JobsModule, RolesModule, AuthModule, ConfigModule.forRoot()],
+  }), UsersModule, JobsModule, RolesModule, AuthModule, UniversitiesModule, ConfigModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })
