@@ -25,7 +25,8 @@ export class JobsService {
     async findOneJob(id: number): Promise<Jobs | null> {
         return await this.jobsRepository
             .createQueryBuilder("job")
-            .leftJoinAndSelect("job.candidates", "user", "user.deleted = false")
+            .leftJoinAndSelect("job.candidates", "candidates", "candidates.deleted = false")
+            .leftJoinAndSelect("job.creator", "creator")
             .where("job.idJob = :id", { id })
             .andWhere("job.deleted = false")
             .getOne();
